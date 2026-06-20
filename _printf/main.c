@@ -14,6 +14,15 @@ int check_size(char *str, char* print_buff) { // check buffer size
     return 0;
 }
 
+char *itoa(int value, char* str, char* buff, int base) {
+    char* ptr = str, *ptr1 = str, tmp_char;
+    int tmp_value; 
+    char tmpBuffer[32];
+    char *pTmpBuffer = tmpBuffer;
+
+    
+}
+
 int main(int argc, char* argv[]) {
     
 }
