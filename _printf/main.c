@@ -52,11 +52,43 @@ char *itoa(int value, char* str, char* buff, int base) {
     return str;
 }
 
-// int _printf(const char *format, ...) {
-//     char print_buff[1024];
-//     int n;
+int _printf(const char *format, ...) {
+    char print_buf[1024];
+    int n;
+    char *str = NULL;   
+    const char *s = NULL;
 
-// }
+    va_list args; // hold arguments;
+    va_start(args, format); // Initalize arguments list 
+
+    for (str = print_buf; *format; format++) {
+        if (*format != '%') { // if the character is not '%' move to next character
+            *str++ = *format;
+            // printed++;
+
+            if(check_size(str, print_buf)) {
+                print_buffer(print_buf, str); 
+                str = print_buf; // reset buffer pointer
+            }
+
+            continue;
+        }
+
+        ++ format; // if there is '%', move to the next character
+
+        switch(*format) {
+            case 'c': 
+                *str++ = va_arg(args, int); // take next character as integer
+                // printed++;
+                if (check_size(str, print_buf)) {
+                    print_buffer(print_buf, str); 
+                    str = print_buf; // reset buffer pointer
+                }
+                continue;
+        }
+    }
+
+}
 
 int main(int argc, char* argv[]) {
     
