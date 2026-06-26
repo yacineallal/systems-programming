@@ -15,7 +15,7 @@ int check_size(char *str, char* print_buff) { // check buffer size
 }
 
 char *itoa(int value, char* str, char* buff, int base) {
-    char* ptr = str, *ptr1 = str, tmp_char;
+    // char* ptr = str, *ptr1 = str, tmp_char;
     int tmp_value; 
     char tmpBuffer[32];
     char *pTmpBuffer = tmpBuffer;
@@ -85,11 +85,67 @@ int _printf(const char *format, ...) {
                     str = print_buf; // reset buffer pointer
                 }
                 continue;
+            
+            case 's':
+                s = va_arg(args, char*); // fetcg bext arguments as char*
+                // printed++;
+                while(*s) {
+                    *str++ = *s++;
+                    if(check_size(str, print_buf)) {
+                        print_buffer(print_buf, str);
+                        str = print_buf; // reset buffer pointer
+                    }
+                }
+                continue;
+            case 'd': // only cover integer size only
+            case 'i': 
+                n = va_arg(args, int); // fetch next character as integer 
+                str = itoa(n, str, print_buf, 10); 
+                continue; 
+            case 'x': 
+                n = va_arg(args, int); 
+                str = itoa(n, str, print_buf, 16);
+                continue; 
+            case 'n': {// takes in a pointer (memory address) and writes there the number of characters written so far 
+                int *ip = va_arg(args, int*);
+                *ip = (str - print_buf);
+                continue; 
+            } 
+            default:
+                *str++ = '%'; // if after '%' does not have valid identifier, print as usual 
+                if(*format) {
+                    *str++ = *format; 
+                } 
+                if (check_size(str, print_buf)) {
+                    print_buffer(print_buf, str); 
+                    str = print_buf; // reset buffer pointer
+                }
+                
         }
     }
 
+    va_end(args);
+    print_buffer(print_buf, str);
+    return 0;
 }
 
 int main(int argc, char* argv[]) {
-    
+    char character = 'G';
+    char string[2048] = "Yacine!";
+    int positive_num = 1234;
+    int negative_num = -1234;
+    int integer_num = 345543;
+    int overwrite_int = 1;
+
+    _printf("123459%n\n", &overwrite_int);
+    _printf("Printing overwrite_int = %d\n", overwrite_int);
+    _printf("Hex number = %x\n", negative_num);
+    _printf("Positive number = %d xxxx\n", positive_num);
+    _printf("Negative number = %d xxxx\n", negative_num);
+    _printf("My name is = %s\n", string);
+    _printf("First letter is = %c\n", character);
+    _printf("it must print %a\n");
+    _printf("it must print %x\n", 255);
+
+    return 0;
 }
