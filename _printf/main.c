@@ -106,7 +106,7 @@ int _printf(const char *format, ...) {
                 n = va_arg(args, int); 
                 str = itoa(n, str, print_buf, 16);
                 continue; 
-            case 'n': {// takes in a pointer (memory address) and writes there the number of characters written so far 
+            case 'n': { // takes in a pointer (memory address) and writes there the number of characters written so far 
                 int *ip = va_arg(args, int*);
                 *ip = (str - print_buf);
                 continue; 
